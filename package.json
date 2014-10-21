@@ -1,0 +1,18 @@
+{
+  "name": "duo-6to5",
+  "description": "Duo plugin for 6to5",
+  "version": "0.0.1",
+  "keywords": [],
+  "author": "Henrik Kjelsberg <henrik.kjelsberg@bdo.no>",
+  "repository": "bdo-labs/duo6to5",
+  "scripts": {
+    "test": "mocha test/*.test.js"
+  },
+  "dependencies": {
+    "6to5": "~1.9.9"
+  },
+  "devDependencies": {
+    "duo": "~0.8.5",
+    "mocha": "~1.21.5"
+  }
+}
