@@ -6,7 +6,7 @@
   "author": "Henrik Kjelsberg <henrik.kjelsberg@bdo.no>",
   "repository": "bdo-labs/duo6to5",
   "scripts": {
-    "test": "mocha test/*.test.js"
+    "test": "mocha"
   },
   "dependencies": {
     "6to5": "~1.9.9"
