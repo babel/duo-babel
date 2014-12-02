@@ -20,10 +20,14 @@ module.exports = plugin;
 
 function plugin(opts){
   opts = opts || {};
-  return function(file){
-    if ('js' !== file.type)  return;
+
+  var onlyLocals = !!opts.onlyLocals;
+  delete opts.onlyLocals;
+
+  return function duo6to5(file){
+    if ('js' !== file.type) return;
+    if (onlyLocals && file.id.indexOf('@') > -1) return; // ignore any remotes
     var es5 = compile(file.src, opts);
     file.src = es5.code;
   }
 }
-
