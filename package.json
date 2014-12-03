@@ -1,7 +1,7 @@
 {
   "name": "duo-6to5",
   "description": "Duo plugin for 6to5",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "keywords": [],
   "author": "Henrik Kjelsberg <henrik.kjelsberg@bdo.no>",
   "repository": "bdo-labs/duo6to5",
