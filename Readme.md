@@ -2,7 +2,7 @@
 duo-6to5
 ========
 
-duo plugin for [sebmck/6to5](https://github.com/sebmck/6to5).
+[duo](http://duojs.org)-plugin for [sebmck/6to5](/sebmck/6to5).
 
 
 Installation

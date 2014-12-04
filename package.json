@@ -2,7 +2,7 @@
   "name": "duo-6to5",
   "description": "Duo plugin for 6to5",
   "version": "0.0.2",
-  "keywords": [],
+  "keywords": ["es6", "ecma", "duo", "transpile"],
   "author": "Henrik Kjelsberg <henrik.kjelsberg@bdo.no>",
   "repository": "bdo-labs/duo6to5",
   "scripts": {
