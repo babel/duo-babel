@@ -1,10 +1,10 @@
 {
   "name": "duo-6to5",
-  "description": "Duo plugin for 6to5",
-  "version": "0.0.2",
+  "description": "Turn ES6 code into readable vanilla ES5 with source maps using Duo",
+  "version": "0.0.21",
   "keywords": ["es6", "ecma", "duo", "transpile"],
   "author": "Henrik Kjelsberg <henrik.kjelsberg@bdo.no>",
-  "repository": "bdo-labs/duo6to5",
+  "repository": "6to5/duo6to5",
   "scripts": {
     "test": "mocha"
   },
