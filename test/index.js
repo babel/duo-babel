@@ -17,7 +17,7 @@ describe('duo-6to5', function() {
   it('should compile .js', function(done) {
     build('simple').run(function(err, src) {
       if (err) return done(err);
-      assert(src.indexOf('var _TRANSFORMED') !== -1);
+      assert(src.indexOf('var TRANSFORMED') !== -1);
       done();
     });
   });

@@ -1,7 +1,7 @@
 {
   "name": "duo-6to5",
   "description": "Turn ES6 code into readable vanilla ES5 with source maps using Duo",
-  "version": "0.0.21",
+  "version": "1.0.0",
   "keywords": ["es6", "ecma", "duo", "transpile"],
   "author": "Henrik Kjelsberg <henrik.kjelsberg@bdo.no>",
   "repository": "6to5/duo6to5",
@@ -9,7 +9,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "6to5": "~1.9.9"
+    "6to5": "^2.0.0"
   },
   "devDependencies": {
     "duo": "~0.8.5",
