@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 
-var compile = require('6to5').transform;
+var compile = require('6to5-core').transform;
 
 /**
  * Expose `plugin`.

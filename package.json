@@ -9,7 +9,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "6to5": "^2.0.0"
+    "6to5-core": "^3.0.0"
   },
   "devDependencies": {
     "duo": "~0.8.5",
