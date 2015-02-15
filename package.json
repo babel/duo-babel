@@ -1,7 +1,7 @@
 {
   "name": "duo-babel",
   "description": "Turn ES6 code into readable vanilla ES5 with source maps using Duo",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "keywords": [
     "es6",
     "ecma",
