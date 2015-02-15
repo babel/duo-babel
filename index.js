@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 
-var compile = require('6to5-core').transform;
+var compile = require('babel-core').transform;
 
 /**
  * Expose `plugin`.
@@ -12,7 +12,7 @@ var compile = require('6to5-core').transform;
 module.exports = plugin;
 
 /**
- * 6to5 plugin
+ * babel plugin
  *
  * @param {Object} opts
  * @return {Function}
@@ -24,7 +24,7 @@ function plugin(opts){
   var onlyLocals = !!opts.onlyLocals;
   delete opts.onlyLocals;
 
-  return function duo6to5(file){
+  return function duoBabel(file){
     if ('js' !== file.type) return;
     if (onlyLocals && file.id.indexOf('@') > -1) return; // ignore any remotes
     var es5 = compile(file.src, opts);

@@ -1,14 +1,14 @@
 
-duo-6to5
+duo-babel
 ========
 
-[duo](http://duojs.org)-plugin for [sebmck/6to5](/sebmck/6to5).
+[duo](http://duojs.org)-plugin for [babel/babel](/babel/babel).
 
 
 Installation
 ------------
 
-    $ npm install duo-6to5
+    $ npm install duo-babel
 
 
 Usage
@@ -16,7 +16,7 @@ Usage
 
 From the CLI:
 
-    $ duo --use duo-6to5
+    $ duo --use duo-babel
 
 Using the API:
 
@@ -31,8 +31,8 @@ Duo(root)
 API
 ---
 
-__to5([opts])__
-Initialize a duo plugin. `opts` are passed directly into 6to5.
+__babel([opts])__
+Initialize a duo plugin. `opts` are passed directly into babel.
 
 
 License

@@ -13,7 +13,7 @@ var vm = require('vm');
  * Tests
  */
 
-describe('duo-6to5', function() {
+describe('duo-babel', function() {
   it('should compile .js', function(done) {
     build('simple').run(function(err, src) {
       if (err) return done(err);
@@ -37,7 +37,7 @@ describe('duo-6to5', function() {
  * Returns a duo builder for the given fixture
  *
  * @param {String} fixture    The name of fixture (w/o fixtures/ or .js)
- * @param {Object} [options]  Options for the 6to5 plugin
+ * @param {Object} [options]  Options for the babel plugin
  * @returns {Duo}
  */
 

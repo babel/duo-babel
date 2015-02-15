@@ -1,5 +1,5 @@
 {
-  "name": "duo-6to5",
+  "name": "duo-babel",
   "description": "Turn ES6 code into readable vanilla ES5 with source maps using Duo",
   "version": "3.0.0",
   "keywords": [
@@ -9,12 +9,12 @@
     "transpile"
   ],
   "author": "Henrik Kjelsberg <henrik.kjelsberg@bdo.no>",
-  "repository": "6to5/duo6to5",
+  "repository": "babel/duo-babel",
   "scripts": {
     "test": "mocha"
   },
   "dependencies": {
-    "6to5-core": "^3.0.0"
+    "babel-core": "^4.0.0"
   },
   "devDependencies": {
     "duo": "~0.8.5",
