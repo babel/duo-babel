@@ -24,7 +24,7 @@ function plugin(opts){
   var onlyLocals = !!opts.onlyLocals;
   delete opts.onlyLocals;
 
-  return function duoBabel(file){
+  return function babel(file){
     if ('js' !== file.type) return;
     if (onlyLocals && file.id.indexOf('@') > -1) return; // ignore any remotes
     var es5 = compile(file.src, opts);
