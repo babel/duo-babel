@@ -17,7 +17,7 @@ describe('duo-babel', function() {
   it('should compile .js', function(done) {
     build('simple').run(function(err, src) {
       if (err) return done(err);
-      assert(src.indexOf('var TRANSFORMED') !== -1);
+      assert(src.code.indexOf('var TRANSFORMED') !== -1);
       done();
     });
   });
@@ -26,7 +26,7 @@ describe('duo-babel', function() {
     build('remote', { onlyLocals: true }).run(function (err, src) {
       if (err) return done(err);
       // console.log(src);
-      var ret = evaluate(src);
+      var ret = evaluate(src.code);
       // console.log(ret);
       done();
     });
