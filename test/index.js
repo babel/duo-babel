@@ -4,9 +4,10 @@
  */
 
 var assert = require('assert');
+var convert = require('convert-source-map');
 var Duo = require('duo');
 var path = require('path');
-var to5 = require('..');
+var babel = require('..');
 var vm = require('vm');
 
 /**
@@ -31,6 +32,22 @@ describe('duo-babel', function() {
       done();
     });
   });
+
+  it('should include an inline source-map by default', function(done) {
+    build('simple').run(function(err, src) {
+      if (err) return done(err);
+      assert(convert.commentRegex.test(src));
+      done();
+    })
+  });
+
+  it('should not include an inline source-map', function(done) {
+    build('simple', { sourceMap: false }).run(function(err, src) {
+      if (err) return done(err);
+      assert(!convert.commentRegex.test(src));
+      done();
+    })
+  });
 });
 
 /**
@@ -45,7 +62,7 @@ function build(fixture, options) {
   return Duo(__dirname)
     .cache(false)
     .entry('fixtures/' + fixture + '.js')
-    .use(to5(options));
+    .use(babel(options));
 }
 
 /**
