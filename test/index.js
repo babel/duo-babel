@@ -36,7 +36,7 @@ describe('duo-babel', function() {
   it('should include an inline source-map by default', function(done) {
     build('simple').run(function(err, src) {
       if (err) return done(err);
-      assert(convert.commentRegex.test(src));
+      assert(convert.commentRegex.test(src.code));
       done();
     })
   });
@@ -44,7 +44,7 @@ describe('duo-babel', function() {
   it('should not include an inline source-map', function(done) {
     build('simple', { sourceMap: false }).run(function(err, src) {
       if (err) return done(err);
-      assert(!convert.commentRegex.test(src));
+      assert(!convert.commentRegex.test(src.code));
       done();
     })
   });
