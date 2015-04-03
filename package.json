@@ -11,7 +11,7 @@
   "author": "Henrik Kjelsberg <henrik.kjelsberg@bdo.no>",
   "repository": "babel/duo-babel",
   "scripts": {
-    "test": "mocha --harmony-generators"
+    "test": "mocha --harmony"
   },
   "dependencies": {
     "babel-core": "^5.0.0"
