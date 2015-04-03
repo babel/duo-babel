@@ -26,7 +26,7 @@ function plugin(opts){
 
   return function babel(file){
     if ('js' !== file.type) return;
-    if (onlyLocals && file.id.indexOf('@') > -1) return; // ignore any remotes
+    if (onlyLocals && file.remote()) return; // ignore any remotes
     var es5 = compile(file.src, opts);
     file.src = es5.code;
   }

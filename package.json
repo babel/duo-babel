@@ -17,7 +17,7 @@
     "babel-core": "^5.0.0"
   },
   "devDependencies": {
-    "duo": "~0.8.5",
+    "duo": "^0.10.0",
     "mocha": "~1.21.5"
   }
 }
