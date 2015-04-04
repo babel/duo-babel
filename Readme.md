@@ -1,43 +1,52 @@
 [![Build Status](https://travis-ci.org/duojs/babel.svg)](https://travis-ci.org/babel/duo-babel)
 
-duo-babel
-========
+# duo-babel
 
-[duo](http://duojs.org)-plugin for [babel/babel](/babel/babel).
-
-
-Installation
-------------
-
-    $ npm install duo-babel
+[duo](http://duojs.org)-plugin for [babel](/babel/babel).
 
 
-Usage
------
+## Installation
+
+```sh
+$ npm install duo-babel
+```
+
+## Usage
 
 From the CLI:
 
-    $ duo --use duo-babel
+```sh
+$ duo --use duo-babel
+```
 
 Using the API:
 
-```javascript
-Duo(root)
-  .entry(entry)
-  .use(to5)
-  .run(fn);
+```js
+var Duo = require('duo');
+var babel = require('duo-babel');
+
+Duo(__dirname)
+  .entry('index.js')
+  .use(babel())
+  .run(function (err, results) {
+    // ...
+  });
 ```
 
+## API
 
-API
----
+### babel([options])
 
-__babel([opts])__
-Initialize a duo plugin. `opts` are passed directly into babel.
+Initialize a duo plugin. Available `options`:
+
+ * `onlyLocals` will skip compiling remote dependencies when true
+ * anything else is passed directly to [babel](https://babeljs.io/docs/usage/options/)
+
+ES6 source-maps are turned on automatically when duo has enabled source-maps,
+this feature can be disabled by explicitly setting the `sourceMaps` option.
 
 
-License
--------
+## License
 
 The MIT License
 
