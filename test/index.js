@@ -56,6 +56,16 @@ describe('duo-babel', function() {
       done();
     })
   });
+
+  it('should pass additional options directly to babel', function(done) {
+    build('options', { whitelist: [ 'es6.spread' ] })
+      .run(function (err, src) {
+        if (err) return done(err);
+        assert(src.code.indexOf('const') > -1);
+        assert(src.code.indexOf('...') === -1);
+        done();
+      });
+  });
 });
 
 /**
