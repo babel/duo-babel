@@ -14,20 +14,27 @@ module.exports = plugin;
 /**
  * babel plugin
  *
- * @param {Object} opts
+ * @param {Object} o
  * @return {Function}
  */
 
-function plugin(opts){
-  opts = opts || {};
+function plugin(o){
+  if (!o) o = {};
 
-  var onlyLocals = !!opts.onlyLocals;
-  delete opts.onlyLocals;
+  // extract the onlyLocals option
+  var onlyLocals = o.onlyLocals || false;
 
-  return function babel(file){
+  return function babel(file, entry) {
     if ('js' !== file.type) return;
     if (onlyLocals && file.remote()) return; // ignore any remotes
-    var es5 = compile(file.src, opts);
+
+    var es5 = compile(file.src, {
+      filename: file.path,
+      filenameRelative: file.id,
+      sourceRoot: file.root,
+      sourceMap: !!file.duo.sourceMap() ? 'inline' : false
+    });
+
     file.src = es5.code;
   }
 }
