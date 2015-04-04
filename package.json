@@ -14,12 +14,11 @@
     "test": "mocha --harmony"
   },
   "dependencies": {
-    "babel-core": "^5.0.0",
-    "extend": "^2.0.0"
+    "babel-core": "^5.0.0"
   },
   "devDependencies": {
     "convert-source-map": "^1.0.0",
-    "duo": "^0.10.0",
+    "duo": "^0.11.1",
     "mocha": "~1.21.5"
   }
 }

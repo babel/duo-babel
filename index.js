@@ -4,7 +4,6 @@
  */
 
 var compile = require('babel-core').transform;
-var extend = require('extend');
 
 /**
  * Expose `plugin`.
@@ -20,36 +19,22 @@ module.exports = plugin;
  */
 
 function plugin(o){
-  var opts = extend({}, plugin.defaults, o);
+  if (!o) o = {};
 
   // extract the onlyLocals option
-  var onlyLocals = opts.onlyLocals;
-  delete opts.onlyLocals;
+  var onlyLocals = o.onlyLocals || false;
 
-  return function babel(file){
+  return function babel(file, entry) {
     if ('js' !== file.type) return;
     if (onlyLocals && file.remote()) return; // ignore any remotes
 
-    // add more options that can only be found during runtime
-    var options = extend({}, opts, {
+    var es5 = compile(file.src, {
       filename: file.path,
       filenameRelative: file.id,
-      sourceRoot: file.root
+      sourceRoot: file.root,
+      sourceMap: !!file.duo.sourceMap() ? 'inline' : false
     });
 
-    var es5 = compile(file.src, options);
     file.src = es5.code;
   }
 }
-
-/**
- * default configuration options
- */
-
-plugin.defaults = {
-  // skips downloaded remotes (for compatibility reasons)
-  onlyLocals: false,
-
-  // so duo can include them in it's own source-map
-  sourceMap: 'inline'
-};
