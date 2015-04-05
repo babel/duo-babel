@@ -33,7 +33,6 @@ function plugin(o) {
     var options = extend(true, {
       filename: file.path,
       filenameRelative: file.id,
-      sourceRoot: file.root,
       sourceMap: !!file.duo.sourceMap() ? 'inline' : false
     }, o);
 
