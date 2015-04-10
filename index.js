@@ -33,7 +33,8 @@ function plugin(o) {
     var options = extend(true, {
       filename: file.path,
       filenameRelative: file.id,
-      sourceMap: !!file.duo.sourceMap() ? 'inline' : false
+      sourceMap: !!file.duo.sourceMap() ? 'inline' : false,
+      sourceRoot: '/duo'
     }, o);
 
     var es5 = compile(file.src, options);
