@@ -37,7 +37,11 @@ function plugin(o) {
       sourceRoot: '/duo'
     }, o);
 
-    var es5 = compile(file.src, options);
-    file.src = es5.code;
+    try {
+      var es5 = compile(file.src, options);
+      file.src = es5.code;
+    } catch (err) {
+      throw new Error(err.message);
+    }
   }
 }
