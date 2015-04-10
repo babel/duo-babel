@@ -34,7 +34,7 @@ function plugin(o) {
       filename: file.path,
       filenameRelative: file.id,
       sourceMap: !!file.duo.sourceMap() ? 'inline' : false,
-      sourceRoot: '/duo'
+      sourceRoot: '/'
     }, o);
 
     try {
