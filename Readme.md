@@ -39,28 +39,28 @@ Duo(__dirname)
 
 Initialize a duo plugin. Available `options`:
 
- * `only` a list of glob patterns to only transpile
- * `ignore` a list of glob patterns to not transpile (the opposite of `only`)
- * anything else is passed directly to [babel](https://babeljs.io/docs/usage/options/)
+ - `onlyLocals` specify that any remotes should not be transpiled
+ - `only` a list of glob patterns to only transpile
+ - `ignore` a list of glob patterns to not transpile (the opposite of `only`)
+ - anything else is passed directly to [babel](https://babeljs.io/docs/usage/options/)
 
 
-### Patterns for only / ignore
+### Selective Transpiling
+
+In many cases, `ignoreLocals` is needed early on. Your local scripts need to be
+transpiled, but most of your dependencies don't need it. However, as time goes
+on and you publish your own dependencies using ES6, you'll need something more
+selective.
 
 You can add an array as either `only` _or_ `ignore` (not both) to selectively
 enable babel's transpilation.
 
-The list you provide are simple glob patterns, with 2 special cases:
+Your patterns should match the directory structure that duo uses. (and that you
+can see on disk)
 
- - "locals" refers to any local modules
- - "remotes" refers to any downloaded modules
-
-Aside from the above 2, your patterns should match the directory structure that
-duo uses. (and that you can see on disk)
-
- - `components/component-*/**.js` will match anything in the
-   [component](https://github.com/component) organization.
- - `components/lodash-lodash@*/**.js` will match any version of lodash
  - `lib/**.js` will match any JS file in the local lib dir
+ - `components/lodash-lodash@*/**.js` will match any version of lodash
+ - `components/component-*/**.js` will match anything in the [component](https://github.com/component) organization.
 
 
 ### Source Maps

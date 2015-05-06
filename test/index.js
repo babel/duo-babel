@@ -24,7 +24,7 @@ describe('duo-babel', function() {
   });
 
   it('should only compile local js files', function(done) {
-    build('es6-local-es5-remote', { only: [ 'locals' ] }).run(function (err, src) {
+    build('es6-local-es5-remote', { onlyLocals: true }).run(function(err, src) {
       if (err) return done(err);
       var ret = evaluate(src.code);
       assert.equal(ret, 6);
@@ -32,35 +32,8 @@ describe('duo-babel', function() {
     });
   });
 
-  it('should only compile remote js files', function(done) {
-    build('es5-local-es6-remote', { only: [ 'remotes' ] }).run(function (err, src) {
-      if (err) return done(err);
-      var ret = evaluate(src.code);
-      assert.equal(ret, 6);
-      done();
-    });
-  });
-
-  it('should not compile local js files', function(done) {
-    build('es5-local-es6-remote', { ignore: [ 'locals' ] }).run(function (err, src) {
-      if (err) return done(err);
-      var ret = evaluate(src.code);
-      assert.equal(ret, 6);
-      done();
-    });
-  });
-
-  it('should not compile remote js files', function(done) {
-    build('es6-local-es5-remote', { ignore: [ 'remotes' ] }).run(function (err, src) {
-      if (err) return done(err);
-      var ret = evaluate(src.code);
-      assert.equal(ret, 6);
-      done();
-    });
-  });
-
-  it('should only compile the specified remote', function (done) {
-    build('specific-remotes', { only: [ 'components/sum-es6*/**.js' ] }).run(function (err, src) {
+  it('should only compile the specified remote', function(done) {
+    build('specific-remotes', { only: [ 'components/sum-es6*/**.js' ] }).run(function(err, src) {
       if (err) return done(err);
       var ret = evaluate(src.code);
       assert(ret);
@@ -68,8 +41,8 @@ describe('duo-babel', function() {
     });
   });
 
-  it('should only compile the specified remote', function (done) {
-    build('specific-remotes', { ignore: [ 'components/sum-es5*/**.js' ] }).run(function (err, src) {
+  it('should only compile the specified remote', function(done) {
+    build('specific-remotes', { ignore: [ 'components/sum-es5*/**.js' ] }).run(function(err, src) {
       if (err) return done(err);
       var ret = evaluate(src.code);
       assert(ret);
@@ -103,7 +76,7 @@ describe('duo-babel', function() {
 
   it('should pass additional options directly to babel', function(done) {
     build('options', { whitelist: [ 'es6.spread' ] })
-      .run(function (err, src) {
+      .run(function(err, src) {
         if (err) return done(err);
         assert(src.code.indexOf('const') > -1);
         assert(src.code.indexOf('...') === -1);
