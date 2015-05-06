@@ -7,6 +7,6 @@
  * "use strict"; is added to the source code.
  */
 
-function add(a, a, c) {
+module.exports = function sum(a, b, c, d, d) {
   return a + b + c;
-}
+};

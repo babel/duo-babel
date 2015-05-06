@@ -24,11 +24,55 @@ describe('duo-babel', function() {
   });
 
   it('should only compile local js files', function(done) {
-    build('remote', { onlyLocals: true }).run(function (err, src) {
+    build('es6-local-es5-remote', { only: [ 'locals' ] }).run(function (err, src) {
       if (err) return done(err);
-      // console.log(src);
       var ret = evaluate(src.code);
-      // console.log(ret);
+      assert.equal(ret, 6);
+      done();
+    });
+  });
+
+  it('should only compile remote js files', function(done) {
+    build('es5-local-es6-remote', { only: [ 'remotes' ] }).run(function (err, src) {
+      if (err) return done(err);
+      var ret = evaluate(src.code);
+      assert.equal(ret, 6);
+      done();
+    });
+  });
+
+  it('should not compile local js files', function(done) {
+    build('es5-local-es6-remote', { ignore: [ 'locals' ] }).run(function (err, src) {
+      if (err) return done(err);
+      var ret = evaluate(src.code);
+      assert.equal(ret, 6);
+      done();
+    });
+  });
+
+  it('should not compile remote js files', function(done) {
+    build('es6-local-es5-remote', { ignore: [ 'remotes' ] }).run(function (err, src) {
+      if (err) return done(err);
+      var ret = evaluate(src.code);
+      assert.equal(ret, 6);
+      done();
+    });
+  });
+
+  it('should only compile the specified remote', function (done) {
+    build('specific-remotes', { only: [ 'components/sum-es6*/**.js' ] }).run(function (err, src) {
+      if (err) return done(err);
+      var ret = evaluate(src.code);
+      assert(ret);
+      done();
+    });
+  });
+
+  it('should only compile the specified remote', function (done) {
+    build('specific-remotes', { ignore: [ 'components/sum-es5*/**.js' ] }).run(function (err, src) {
+      if (err) return done(err);
+      var ret = evaluate(src.code);
+      assert(ret);
       done();
     });
   });
