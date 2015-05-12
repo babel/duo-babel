@@ -47,7 +47,7 @@ Initialize a duo plugin. Available `options`:
 
 ### Selective Transpiling
 
-In many cases, `ignoreLocals` is needed early on. Your local scripts need to be
+In many cases, `onlyLocals` is needed early on. Your local scripts need to be
 transpiled, but most of your dependencies don't need it. However, as time goes
 on and you publish your own dependencies using ES6, you'll need something more
 selective.
