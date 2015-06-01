@@ -3,9 +3,16 @@
  * Module dependencies.
  */
 
-var compile = require('babel-core').transform;
+var babel = require('babel-core');
 var extend = require('extend');
 var path = require('path');
+
+/**
+ * Helper methods.
+ */
+
+var compile = babel.transform;
+var canCompile = babel.util.canCompile;
 
 /**
  * Expose `plugin`.
@@ -30,18 +37,17 @@ module.exports = plugin;
 function plugin(o) {
   if (!o) o = {};
 
-  var onlyLocals = o.onlyLocals;
-  delete o.onlyLocals;
-
-  var only = o.only;
-  delete o.only;
-
-  var ignore = o.ignore;
-  delete o.ignore;
+  var extensions = extract(o, 'extensions');
+  var onlyLocals = extract(o, 'onlyLocals');
+  var only = extract(o, 'only');
+  var ignore = extract(o, 'ignore');
 
   return function babel(file, entry) {
-    if (file.type !== 'js') return;           // ignore non-js
-    if (onlyLocals && file.remote()) return;  // ignore remotes
+    // compile only what babel recognizes
+    if (!canCompile(file.path, extensions)) return;
+
+    // ignore remotes if configured to
+    if (onlyLocals && file.remote()) return;
 
     var root = file.duo.root();
 
@@ -56,6 +62,7 @@ function plugin(o) {
 
     try {
       var es5 = compile(file.src, options);
+      file.type = 'js';
       file.src = es5.code;
     } catch (err) {
       throw new Error(err.message);
@@ -77,4 +84,18 @@ function prepend(list, prefix) {
   return list.map(function (item) {
     return path.resolve(prefix, item);
   });
+}
+
+/**
+ * Extracts a value from the input object, deleting the property afterwards.
+ *
+ * @param {Object} object
+ * @param {String} key
+ * @returns {Mixed}
+ */
+
+function extract(object, key) {
+  var value = object[key];
+  delete object[key];
+  return value;
 }

@@ -16,15 +16,53 @@ var vm = require('vm');
 
 describe('duo-babel', function() {
   it('should compile .js', function(done) {
-    build('simple').run(function(err, src) {
+    build('simple.js').run(function(err, src) {
       if (err) return done(err);
-      assert(src.code.indexOf('var TRANSFORMED') !== -1);
+      var ret = evaluate(src.code);
+      assert.equal(ret.area(1), 9.8596);
+      done();
+    });
+  });
+
+  it('should compile .jsx', function(done) {
+    build('simple.jsx').run(function (err, src) {
+      if (err) return done(err);
+      var ret = evaluate(src.code);
+      assert.equal(ret.area(1), 9.8596);
+      done();
+    });
+  });
+
+  it('should compile .es', function(done) {
+    build('simple.es').run(function (err, src) {
+      if (err) return done(err);
+      var ret = evaluate(src.code);
+      assert.equal(ret.area(1), 9.8596);
+      done();
+    });
+  });
+
+  it('should compile .es6', function(done) {
+    build('simple.es6').run(function (err, src) {
+      if (err) return done(err);
+      var ret = evaluate(src.code);
+      assert.equal(ret.area(1), 9.8596);
+      done();
+    });
+  });
+
+  it('should only compile explicit extensions', function(done) {
+    build('simple.js', { extensions: [ '.es6' ] }).run(function (err, src) {
+      if (err) return done(err);
+      assert.throws(function () {
+        evaluate(src.code);
+      }, SyntaxError);
       done();
     });
   });
 
   it('should only compile local js files', function(done) {
-    build('es6-local-es5-remote', { onlyLocals: true }).run(function(err, src) {
+    build('es6-local-es5-remote.js', { onlyLocals: true }).run(function(err, src) {
       if (err) return done(err);
       var ret = evaluate(src.code);
       assert.equal(ret, 6);
@@ -33,7 +71,7 @@ describe('duo-babel', function() {
   });
 
   it('should only compile the specified remote', function(done) {
-    build('specific-remotes', { only: [ 'components/sum-es6*/**.js' ] }).run(function(err, src) {
+    build('specific-remotes.js', { only: [ 'components/sum-es6*/**.js' ] }).run(function(err, src) {
       if (err) return done(err);
       var ret = evaluate(src.code);
       assert(ret);
@@ -42,7 +80,7 @@ describe('duo-babel', function() {
   });
 
   it('should only compile the specified remote', function(done) {
-    build('specific-remotes', { ignore: [ 'components/sum-es5*/**.js' ] }).run(function(err, src) {
+    build('specific-remotes.js', { ignore: [ 'components/sum-es5*/**.js' ] }).run(function(err, src) {
       if (err) return done(err);
       var ret = evaluate(src.code);
       assert(ret);
@@ -51,7 +89,7 @@ describe('duo-babel', function() {
   });
 
   it('should include an inline source-map when duo is including inline source-maps', function(done) {
-    build('simple').sourceMap('inline').run(function(err, src) {
+    build('simple.js').sourceMap('inline').run(function(err, src) {
       if (err) return done(err);
       assert(convert.commentRegex.test(src.code));
       done();
@@ -59,7 +97,7 @@ describe('duo-babel', function() {
   });
 
   it('should include an inline source-map when duo is including external source-maps', function(done) {
-    build('simple').sourceMap(true).run(function(err, src) {
+    build('simple.js').sourceMap(true).run(function(err, src) {
       if (err) return done(err);
       assert(convert.commentRegex.test(src.code));
       done();
@@ -67,7 +105,7 @@ describe('duo-babel', function() {
   });
 
   it('should not include an inline source-map', function(done) {
-    build('simple').run(function(err, src) {
+    build('simple.js').run(function(err, src) {
       if (err) return done(err);
       assert(!convert.commentRegex.test(src.code));
       done();
@@ -75,7 +113,7 @@ describe('duo-babel', function() {
   });
 
   it('should pass additional options directly to babel', function(done) {
-    build('options', { whitelist: [ 'es6.spread' ] })
+    build('options.js', { whitelist: [ 'es6.spread' ] })
       .run(function(err, src) {
         if (err) return done(err);
         assert(src.code.indexOf('const') > -1);
@@ -96,7 +134,7 @@ describe('duo-babel', function() {
 function build(fixture, options) {
   return Duo(__dirname)
     .cache(false)
-    .entry('fixtures/' + fixture + '.js')
+    .entry(path.join('fixtures', fixture))
     .use(babel(options));
 }
 

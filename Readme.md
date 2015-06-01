@@ -39,6 +39,7 @@ Duo(__dirname)
 
 Initialize a duo plugin. Available `options`:
 
+ - `extensions` a list of file extensions that should be transpiled (default: `['.js', '.jsx', '.es', '.es6']`)
  - `onlyLocals` specify that any remotes should not be transpiled
  - `only` a list of glob patterns to only transpile
  - `ignore` a list of glob patterns to not transpile (the opposite of `only`)
