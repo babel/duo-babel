@@ -51,6 +51,16 @@ describe('duo-babel', function() {
     });
   });
 
+  it('should only compile explicit extensions', function(done) {
+    build('simple.js', { extensions: [ '.es6' ] }).run(function (err, src) {
+      if (err) return done(err);
+      assert.throws(function () {
+        evaluate(src.code);
+      }, SyntaxError);
+      done();
+    });
+  });
+
   it('should only compile local js files', function(done) {
     build('es6-local-es5-remote.js', { onlyLocals: true }).run(function(err, src) {
       if (err) return done(err);
