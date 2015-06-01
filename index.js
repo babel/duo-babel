@@ -3,9 +3,16 @@
  * Module dependencies.
  */
 
-var compile = require('babel-core').transform;
+var babel = require('babel-core');
 var extend = require('extend');
 var path = require('path');
+
+/**
+ * Helper methods.
+ */
+
+var compile = babel.transform;
+var canCompile = babel.util.canCompile;
 
 /**
  * Expose `plugin`.
@@ -40,8 +47,11 @@ function plugin(o) {
   delete o.ignore;
 
   return function babel(file, entry) {
-    if (file.type !== 'js') return;           // ignore non-js
-    if (onlyLocals && file.remote()) return;  // ignore remotes
+    // compile only what babel recognizes
+    if (!canCompile(file.path)) return;
+
+    // ignore remotes if configured to
+    if (onlyLocals && file.remote()) return;
 
     var root = file.duo.root();
 
@@ -56,6 +66,7 @@ function plugin(o) {
 
     try {
       var es5 = compile(file.src, options);
+      file.type = 'js';
       file.src = es5.code;
     } catch (err) {
       throw new Error(err.message);
