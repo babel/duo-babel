@@ -79,7 +79,7 @@ function plugin(o) {
  */
 
 function prepend(list, prefix) {
-  if (!list) return false;
+  if (!list) return null;
 
   return list.map(function (item) {
     return path.resolve(prefix, item);
