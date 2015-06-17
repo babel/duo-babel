@@ -36,8 +36,8 @@ module.exports = plugin;
  */
 
 function plugin(o) {
-  debug('initialized with options', o);
   if (!o) o = {};
+  debug('initialized with options', o);
 
   var extensions = extract(o, 'extensions');
   if (extensions) debug('extensions to compile', extensions);
@@ -70,6 +70,7 @@ function plugin(o) {
     try {
       debug('attempting to compile: %s', file.id, options);
       var es5 = compile(file.src, options);
+      if (file.src === es5.code) debug('did not compile: %s', file.id);
       file.type = 'js';
       file.src = es5.code;
     } catch (err) {
