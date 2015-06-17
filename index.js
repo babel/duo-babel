@@ -4,6 +4,7 @@
  */
 
 var babel = require('babel-core');
+var debug = require('debug')('duo-babel');
 var extend = require('extend');
 var path = require('path');
 
@@ -35,19 +36,25 @@ module.exports = plugin;
  */
 
 function plugin(o) {
+  debug('initialized with options', o);
   if (!o) o = {};
 
   var extensions = extract(o, 'extensions');
+  if (extensions) debug('extensions to compile', extensions);
   var onlyLocals = extract(o, 'onlyLocals');
+  if (onlyLocals) debug('only compiling locals');
+
   var only = extract(o, 'only');
+  if (only) debug('only compiling files matching', only);
   var ignore = extract(o, 'ignore');
+  if (ignore) debug('not compiling files matching', ignore);
 
   return function babel(file, entry) {
     // compile only what babel recognizes
-    if (!canCompile(file.path, extensions)) return;
+    if (!canCompile(file.path, extensions)) return debug('ignoring file: %s', file.path);
 
     // ignore remotes if configured to
-    if (onlyLocals && file.remote()) return;
+    if (onlyLocals && file.remote()) return debug('ignoring remote: %s', file.id);
 
     var root = file.duo.root();
 
@@ -61,10 +68,12 @@ function plugin(o) {
     }, o);
 
     try {
+      debug('attempting to compile: %s', file.id, options);
       var es5 = compile(file.src, options);
       file.type = 'js';
       file.src = es5.code;
     } catch (err) {
+      debug('failed to compile: %s', file.id);
       throw new Error(err.message);
     }
   };
