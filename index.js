@@ -12,7 +12,6 @@ var path = require('path');
  * Helper methods.
  */
 
-var compile = babel.transform;
 var canCompile = babel.util.canCompile;
 
 /**
@@ -49,35 +48,73 @@ function plugin(o) {
   var ignore = extract(o, 'ignore');
   if (ignore) debug('not compiling files matching', ignore);
 
-  return function babel(file, entry) {
+  return function* babel(file, entry) {
     // compile only what babel recognizes
     if (!canCompile(file.path, extensions)) return debug('ignoring file: %s', file.path);
 
     // ignore remotes if configured to
     if (onlyLocals && file.remote()) return debug('ignoring remote: %s', file.id);
 
-    var root = file.duo.root();
-
-    var options = extend(true, {
-      filename: file.path,
-      filenameRelative: file.id,
-      sourceMap: file.duo.sourceMap() ? 'inline' : false,
-      sourceRoot: '/',
-      only: prepend(only, root),
-      ignore: prepend(ignore, root)
-    }, o);
-
-    try {
-      debug('attempting to compile: %s', file.id, options);
-      var es5 = compile(file.src, options);
-      if (file.src === es5.code) debug('did not compile: %s', file.id);
-      file.type = 'js';
-      file.src = es5.code;
-    } catch (err) {
-      debug('failed to compile: %s', file.id);
-      throw new Error(err.message);
-    }
+    var duo = file.duo;
+    var es5 = yield run(duo, file, o, only, ignore);
+    file.src = es5.code;
+    file.type = 'js';
   };
+}
+
+/**
+ * Run the compilation, but utilizes the cache if available.
+ *
+ * @param {Duo} duo         Duo instance
+ * @param {File} file       File to be compiled
+ * @param {Object} options  User-defined config
+ * @param {Array} only      User-defined whilelist
+ * @param {Array} ignore    User-defined blacklist
+ * @returns {Object}        Results of babel compile
+ */
+
+function* run(duo, file, options, only, ignore) {
+  var cache = yield duo.getCache();
+  if (!cache) {
+    debug('cache not enabled for %s', file.id);
+    return compile(duo, file, options, only, ignore);
+  }
+
+  var key = [ duo.hash(file.src), duo.hash(options) ];
+  var cached = yield cache.plugin('babel', key);
+  if (cached) {
+    debug('retrieved %s from cache', file.id);
+    return cached;
+  }
+
+  var results = compile(duo, file, options, only, ignore);
+  yield cache.plugin('babel', key, results);
+  debug('saved %s to cache', file.id);
+  return results;
+}
+
+/**
+ * Compiles the file given options from user.
+ */
+
+function compile(duo, file, options, only, ignore) {
+  var root = duo.root();
+  var sourceMap = duo.sourceMap();
+
+  var o = extend(true, {
+    ast: false,
+    filename: file.path,
+    filenameRelative: file.id,
+    sourceMap: sourceMap ? 'inline' : false,
+    sourceRoot: '/',
+    only: prepend(only, root),
+    ignore: prepend(ignore, root)
+  }, options);
+
+  debug('attempting to compile: %s', file.id, o);
+  var es5 = babel.transform(file.src, o);
+  if (file.src === es5.code) debug('did not compile: %s', file.id);
+  return es5;
 }
 
 /**
