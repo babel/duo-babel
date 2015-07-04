@@ -127,19 +127,21 @@ describe('duo-babel', function() {
       });
   });
 
-  describe('with cache enabled', function () {
-    it('should still work', function(done) {
-      build('simple.js').cache(true).run(done);
+  describe.only('with cache enabled', function () {
+    afterEach(function (done) {
+      build('simple.js').cache(true).cleanCache(done);
     });
 
     it('should be significantly faster', function(done) {
+      var duo = build('simple.js').cache(true);
+
       var timer1 = timer();
-      build('simple.js').run(function (err, src) {
+      duo.run(function (err, src) {
         if (err) return done(err);
         var noCache = timer1();
 
         var timer2 = timer();
-        build('simple.js').cache(true).run(function (err, src) {
+        duo.run(function (err, src) {
           if (err) return done(err);
 
           var withCache = timer2();
