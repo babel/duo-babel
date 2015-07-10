@@ -127,7 +127,7 @@ describe('duo-babel', function() {
       });
   });
 
-  describe.only('with cache enabled', function () {
+  describe('with cache enabled', function () {
     afterEach(function (done) {
       build('simple.js').cache(true).cleanCache(done);
     });
