@@ -4,15 +4,20 @@
  */
 
 var assert = require('assert');
+var babel = require('..');
 var convert = require('convert-source-map');
 var Duo = require('duo');
 var path = require('path');
-var babel = require('..');
+var rm = require('rimraf').sync;
 var vm = require('vm');
 
 /**
  * Tests
  */
+
+after(function () {
+  rm(path.join(__dirname, 'components/duo-cache'));
+});
 
 describe('duo-babel', function() {
   it('should compile .js', function(done) {
@@ -121,6 +126,31 @@ describe('duo-babel', function() {
         done();
       });
   });
+
+  describe('with cache enabled', function () {
+    afterEach(function (done) {
+      build('simple.js').cache(true).cleanCache(done);
+    });
+
+    it('should be significantly faster', function(done) {
+      var duo = build('simple.js').cache(true);
+
+      var timer1 = timer();
+      duo.run(function (err, src) {
+        if (err) return done(err);
+        var noCache = timer1();
+
+        var timer2 = timer();
+        duo.run(function (err, src) {
+          if (err) return done(err);
+
+          var withCache = timer2();
+          assert(withCache < noCache / 2);
+          done();
+        });
+      });
+    });
+  });
 });
 
 /**
@@ -148,4 +178,19 @@ function build(fixture, options) {
 function evaluate(src, ctx) {
   ctx = ctx || { console: console };
   return vm.runInNewContext(src, ctx)(1);
+}
+
+/**
+ * Create a timer. The function returned should be called
+ * later and it will return the number of ms since it was
+ * created.
+ *
+ * @returns {Function}
+ */
+
+function timer() {
+  var now = (new Date()).getTime();
+  return function () {
+    return (new Date()).getTime() - now;
+  };
 }
